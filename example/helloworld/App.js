@@ -4,39 +4,16 @@ import { Foo } from "./Foo.js";
 export const App = {
   name: "App",
   render() {
-    return h(
-      "div",
+    const app = h("div", {}, "App");
+    const foo = h(
+      Foo,
+      {},
       {
-        id: "root",
-        class: ["red", "blue"],
-        onClick() {
-          // console.log("onClick");
-        },
-        onMouseDown() {
-          // console.log("onMouseDown");
-        },
-      },
-      [
-        h("div", {}, "hi," + this.msg),
-        h(Foo, {
-          count: 1,
-          onAdd(...args) {
-            console.log("onAdd", ...args);
-          },
-          onAddFoo() {
-            console.log("onAddFoo");
-          }
-        }),
-      ]
-      // [
-      //   h("p", {
-      //     class: 'red',
-      //   }, "hi"),
-      //   h("p", {
-      //     class: 'blue',
-      //   }, "mini-vue"),
-      // ]
+        header: ({ age }) => h("p", {}, "header1" + age),
+        footer: () => h("p", {}, "footer1"),
+      }
     );
+    return h("div", {}, [app, foo]);
   },
   setup() {
     return {
