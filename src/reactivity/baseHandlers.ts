@@ -35,7 +35,7 @@ function createGetter(isReadonly = false, shallow = false) {
 function createSetter() {
   return function set(target, key, value) {
     const res = Reflect.set(target, key, value);
-    trigger(target, key, value);
+    trigger(target, key);
     return res;
   };
 }

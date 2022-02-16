@@ -3,11 +3,11 @@ import { initProps } from "./componentProps";
 import { initSlots } from "./componentSlots";
 import { shallowReadonly } from "../reactivity/reactive"
 import { emit } from "./componentEmit";
+import { proxyRefs } from "../reactivity";
 
 let currentInstance = null
 
 export function createComponentInstance(vnode, parent) {
-  console.log("createComponentInstance", parent);
   const component = {
     vnode,
     type: vnode.type,
@@ -16,6 +16,8 @@ export function createComponentInstance(vnode, parent) {
     slots: {},
     provides: parent ? parent.provides : {},
     parent,
+    isMounted: false,
+    subTree: {},
     emit: () => {}
   };
   component.emit = emit.bind(null, component) as any
@@ -50,7 +52,7 @@ function setupStatefulComponent(instance: any) {
 
 function handleSetupResult(instance, setupResult: any) {
   if (typeof setupResult === "object") {
-    instance.setupState = setupResult;
+    instance.setupState = proxyRefs(setupResult);
   }
 
   finishComponentSetup(instance);
